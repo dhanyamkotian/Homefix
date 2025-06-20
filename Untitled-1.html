@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>homefix.com</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            padding-top: 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 2.5em;
+            animation: slideIn 2s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        /* Main Container */
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        /* Service Card Layout */
+        .service-card {
+            display: inline-block;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            width: 220px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-card h3 {
+            font-size: 1.5em;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .service-card p {
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .service-card button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .service-card button:hover {
+            background-color: #45a049;
+        }
+
+        /* User Form */
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-container input,
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .service-card {
+                width: 48%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .service-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        HOMEFIX: One-Stop Solution for All Your Service Needs
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- User Registration/Login -->
+        <div class="form-container" id="userForm">
+            <h2>Register / Login</h2>
+            <input type="email" id="userEmail" placeholder="Enter your email">
+            <input type="password" id="userPassword" placeholder="Enter your password">
+            <button onclick="loginUser()">Login</button>
+        </div>
+
+        <!-- Service Listings -->
+        <h2>Available Services</h2>
+        <div class="service-card">
+            <h3>Plumbing</h3>
+            <p>Professional plumbing services to fix your pipes and drainage systems.</p>
+            <button onclick="bookService('Plumbing')">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>Electrician</h3>
+            <p>Skilled electricians for home and office electrical services.</p>
+            <button onclick="bookService('Electrician')">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>AC Repair</h3>
+            <p>Expert AC repair services to keep your home cool and comfortable.</p>
+            <button onclick="bookService('AC Repair')">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>Cleaning</h3>
+            <p>Thorough cleaning services for homes, offices, and more.</p>
+            <button onclick="bookService('Cleaning')">Book Now</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        © 2024 ZETAONE | All Rights Reserved
+    </div>
+
+    <script>
+        // Simulating user login functionality
+        function loginUser() {
+            const email = document.getElementById("userEmail").value;
+            const password = document.getElementById("userPassword").value;
+
+            if (email && password) {
+                alert(`Welcome back, ${email}!`);
+                document.getElementById("userForm").style.display = "none";
+            } else {
+                alert("Please enter both email and password.");
+            }
+        }
+
+        // Simulating the booking process
+        function bookService(serviceName) {
+            alert(`You have booked the ${serviceName} service!`);
+        }
+    </script>
+
+</body>
+
+</html>

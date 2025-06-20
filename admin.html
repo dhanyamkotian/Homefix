@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div id="sidebar">
+        <h2>Admin Panel</h2>
+        <ul>
+            <li><a href="#user-activities">Monitor User Activities</a></li>
+            <li><a href="#service-management">Manage Service Categories & Listings</a></li>
+            <li><a href="#disputes">Handle Disputes & Refunds</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <section id="user-activities">
+            <h3>Monitor User Activities</h3>
+            <div class="user-list">
+                <h4>Users Overview</h4>
+                <!-- Table for User Activities -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Last Activity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fade-in">
+                            <td>1</td>
+                            <td>Abhishek </td>
+                            <td>abhisheksit27@gmail.com</td>
+                            <td>Customer</td>
+                            <td>2024-12-10 12:30 PM</td>
+                            <td>Active</td>
+                        </tr>
+                        <tr class="fade-in">
+                            <td>2</td>
+                            <td>Dhanya</td>
+                            <td>dhanya18@gmail.com</td>
+                            <td>Customer</td>
+                            <td>2024-12-10 12:30 PM</td>
+                            <td>Active</td>
+                        </tr>
+                        <tr class="fade-in">
+                            <td>3</td>
+                            <td>Deeksha</td>
+                            <td>deeksha02@gmail.com</td>
+                            <td>Customer</td>
+                            <td>2024-12-10 12:30 PM</td>
+                            <td>Active</td>
+                        </tr>
+                        <tr class="fade-in">
+                            <td>4</td>
+                            <td>Chaithra</td>
+                            <td>chaithra04@gmail.com</td>
+                            <td>Customer</td>
+                            <td>2024-12-10 12:30 PM</td>
+                            <td>Active</td>
+                        </tr>
+                        <!-- More rows here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="service-management">
+            <h3>Manage Service Categories & Listings</h3>
+            <div class="category-management">
+                <h4>Service Categories</h4>
+                <!-- Form to manage categories -->
+                <form>
+                    <label for="category-name">Category Name:</label>
+                    <input type="text" id="category-name" name="category-name" placeholder="Enter Category Name" required>
+                    <button type="submit">Add Category</button>
+                </form>
+                <h4>Manage Service Listings</h4>
+                <!-- Table for Service Listings -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Service ID</th>
+                            <th>Title</th>
+                            <th>Provider</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fade-in">
+                            <td>1</td>
+                            <td>Web Development</td>
+                            <td>Jane Smith</td>
+                            <td>IT Services</td>
+                            <td>Active</td>
+                            <td><button>Edit</button> <button>Delete</button></td>
+                        </tr>
+                        <!-- More rows here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="disputes">
+            <h3>Handle Disputes & Refunds</h3>
+            <div class="dispute-management">
+                <h4>Open Disputes</h4>
+                <!-- Table for Disputes -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Dispute ID</th>
+                            <th>Customer</th>
+                            <th>Provider</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fade-in">
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>Jane Smith</td>
+                            <td>Under Review</td>
+                            <td><button>Resolve</button> <button>Escalate</button></td>
+                        </tr>
+                        <!-- More rows here -->
+                    </tbody>
+                </table>
+                <h4>Refund Requests</h4>
+                <!-- Table for Refund Requests -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Request ID</th>
+                            <th>Customer</th>
+                            <th>Service</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fade-in">
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>Web Development</td>
+                            <td>$500</td>
+                            <td>Pending</td>
+                            <td><button>Approve</button> <button>Reject</button></td>
+                        </tr>
+                        <!-- More rows here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Styles -->
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-color: #f4f4f4;
+        }
+        #sidebar {
+            width: 250px;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            transition: width 0.3s ease;
+            margin-right: 20px;
+        }
+        #sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        #sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #sidebar ul li {
+            margin: 15px 0;
+        }
+        #sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        #main-content {
+            margin-left: 280px;
+            padding: 20px;
+            flex-grow: 1;
+            transition: margin-left 0.3s ease;
+        }
+        h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            padding: 5px 10px;
+            margin-right: 5px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            margin-right: 10px;
+            width: 250px;
+            font-size: 16px;
+        }
+        button[type="submit"] {
+            padding: 8px 15px;
+            font-size: 16px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media screen and (max-width: 768px) {
+            #sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            #sidebar h2 {
+                text-align: center;
+            }
+            #main-content {
+                margin-left: 0;
+            }
+            #sidebar ul {
+                display: flex;
+                justify-content: space-around;
+                padding: 0;
+            }
+            #sidebar ul li {
+                margin: 0;
+                flex: 1;
+                text-align: center;
+            }
+            table {
+                font-size: 14px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            table {
+                font-size: 12px;
+            }
+            input[type="text"] {
+                width: 200px;
+            }
+            button {
+                padding: 4px 8px;
+            }
+        }
+    </style>
+</body>
+</html>

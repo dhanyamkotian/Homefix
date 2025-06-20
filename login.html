@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Homefix</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+
+        /* Main Container */
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        /* Form and Buttons */
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-container input,
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+
+        /* Select User Type */
+        .user-type-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .user-type-container button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 0 20px;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .user-type-container button:hover {
+            background-color: #45a049;
+        }
+
+        /* New User / Existing User Toggle */
+        .user-type-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .user-type-selector button {
+            background-color: #2196F3;
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-type-selector button:hover {
+            background-color: #1976D2;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- User Type Selection -->
+        <div class="user-type-container">
+            <h2>Are you a User or Service Provider?</h2>
+            <button onclick="showLoginForm('user')">User</button>
+            <button onclick="showLoginForm('serviceProvider')">Service Provider</button>
+        </div>
+
+        <!-- Login Form (Dynamic) -->
+        <div class="form-container" id="loginForm" style="display:none;">
+            <h2>Login</h2>
+            <div id="loginFields"></div>
+            <div class="user-type-selector">
+                <button onclick="setUserStatus('existing')">Already Existing User</button>
+                <button onclick="setUserStatus('new')">New User</button>
+            </div>
+            <button class="button" onclick="window.location.href='thankyou.html';">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        let userStatus = ''; // Track if user is new or existing
+
+        function showLoginForm(role) {
+            // Show the login form
+            document.getElementById('loginForm').style.display = 'block';
+
+            // Set the form fields based on the selected role
+            const loginFields = document.getElementById('loginFields');
+            loginFields.innerHTML = '';
+            userStatus = ''; // Reset user status
+
+            if (role === 'user') {
+                loginFields.innerHTML = `
+                    <input type="text" id="userEmail" placeholder="Enter your email">
+                    <input type="password" id="userPassword" placeholder="Enter your password">
+                `;
+            } else if (role === 'serviceProvider') {
+                loginFields.innerHTML = `
+                    <input type="text" id="serviceProviderID" placeholder="Enter your service provider ID">
+                    <input type="password" id="serviceProviderPassword" placeholder="Enter your password">
+                `;
+            }
+        }
+
+        function setUserStatus(status) {
+            userStatus = status;
+            const loginFields = document.getElementById('loginFields');
+            const buttonText = status === 'new' ? 'Create New Account' : 'Log In';
+
+            // Update form fields for new/existing user
+            if (userStatus === 'new') {
+                loginFields.innerHTML = `
+                    <input type="text" id="userName" placeholder="Username">
+                    <input type="email" id="userEmail" placeholder="Enter your email">
+                    <input type="password" id="userPassword" placeholder="Create a password">
+                `;
+            } else {
+                // For existing user, show the login form
+                loginFields.innerHTML = `
+                    <input type="text" id="userEmail" placeholder="Enter your email">
+                    <input type="password" id="userPassword" placeholder="Enter your password">
+                `;
+            }
+        }
+
+        function loginSubmit() {
+            // Determine the role and gather data
+            let email, password, username;
+
+            if (document.getElementById('userEmail')) {
+                email = document.getElementById('userEmail').value;
+                password = document.getElementById('userPassword').value;
+                username = document.getElementById('userName') ? document.getElementById('userName').value : '';
+
+                if (userStatus === 'new' && !username) {
+                    alert('Please enter a username.');
+                    return;
+                }
+            }
+
+            if (email && password) {
+                alert(`Welcome ${userStatus === 'new' ? username : email}!`);
+            } else {
+                alert('Please enter all fields.');
+            }
+        }
+    </script>
+
+</body>
+
+</html>

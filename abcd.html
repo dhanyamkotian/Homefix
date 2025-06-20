@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homefix - Services</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #333;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* Logo Styling */
+        .logo {
+            max-height: 50px;
+            margin-left: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            padding: 10px 15px;
+            font-size: 18px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Profile Section */
+        .profile-container {
+            position: relative;
+        }
+
+        .profile {
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+
+        .profile:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            z-index: 100;
+            height: 300px;
+            overflow-y: scroll;
+
+        }
+
+        .dropdown-menu a {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f4f4f4;
+        }
+
+        .profile-container:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* Content Section */
+        .content {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .content h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .content p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        /* Search Bar */
+        .search-container {
+            margin-top: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .search-container input[type="text"] {
+            padding: 12px;
+            width: 300px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .search-container button {
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .search-container button:hover {
+            background-color: #45a049;
+        }
+
+        /* Dropdown Results */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            width: 300px;
+            display: none;
+            margin-top: 5px;
+        }
+
+        .dropdown div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .dropdown div:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Services Section */
+        .services-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: 220px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-card h3 {
+            font-size: 1.5em;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .service-card p {
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .service-card button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .service-card button:hover {
+            background-color: #45a049;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav a {
+                font-size: 16px;
+            }
+
+            .search-container input[type="text"] {
+                width: 250px;
+            }
+
+            .service-card {
+                width: 48%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .service-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <!-- Logo on the left -->
+        <img src="logo.png" alt="Homefix Logo" class="logo">
+
+        <!-- Navigation Links -->
+        <a href="#">Home</a>
+        <a href="login.html">Login</a>
+        <a href="#" onclick="showServices()">Services</a>
+        <a href="contact.html">Contact Us</a>
+
+        <!-- Profile Section -->
+        <div class="profile-container">
+            <div class="profile">Profile</div>
+            <!-- Dropdown Menu -->
+            <div class="dropdown-menu">
+                <a href="login.html">Login</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="#">User Management</a>
+                
+               
+                
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Section -->
+    <div class="content">
+        <h1><b><i>Welcome to Homefix</i></b></h1>
+        <p>Your One-Stop Solution for All Your Service Needs – Anytime, Anywhere.</p>
+        
+        <!-- Search Bar Section -->
+        <div class="search-container">
+            <input type="text" placeholder="Search for services..." id="search-bar" oninput="searchService()">
+            <button onclick="searchService()">Search</button>
+
+            <!-- Dropdown to display results -->
+            <div id="dropdown" class="dropdown"></div>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <div id="services-section" class="services-container" style="display: none;">
+        <div class="service-card">
+            <h3>AC Technician</h3>
+            <p>Expert AC repair and maintenance services.</p>
+            <button type="button" onclick="location.href='https://www.justdial.com/Mangalore/AC-Repair-Services/nct-10890481'">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>Electrician</h3>
+            <p>Skilled electricians for all your electrical needs.</p>
+            <button type="button" onclick="location.href='https://www.justdial.com/Mangalore/Electricians/nct-10184166'">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>Plumber</h3>
+            <p>Reliable plumbing services for your home and office.</p>
+            <button type="button" onclick="location.href='https://www.justdial.com/Mangalore/Plumbers/nct-10378025'">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>Mechanic</h3>
+            <p>Get your vehicle repaired by certified mechanic.</p>
+            <button type="button" onclick="location.href='https://www.justdial.com/Mangalore/Car-Repair-Services-At-Door-Step/nct-11272066'">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>Carpenter</h3>
+            <p>Professional carpentry services for furniture and repairs.</p>
+            <button type="button" onclick="location.href='https://www.justdial.com/Mangalore/Carpenters/nct-10080635'">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>Technician</h3>
+            <p>Technician for home appliances and maintenance.</p>
+            <button type="button" onclick="location.href='https://www.justdial.com/Mangalore/Office-Cleaning-Services/nct-10890868'">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>Cleaning</h3>
+            <p>Expert cleaning services for homes and offices.</p>
+            <button type="button" onclick="location.href='https://www.justdial.com/Mangalore/Office-Cleaning-Services/nct-10890868'">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>Pest Control</h3>
+            <p>Efficient pest control solutions for your home and office.</p>
+            <button type="button" onclick="location.href='https://www.fieldroutes.com/blog/pest-control-methods'">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>Home Appliances Repair</h3>
+            <p>Repair and maintenance for all home appliances.</p>
+            <button type="button" onclick="location.href='https://www.justdial.com/Mangalore/Home-Appliance-Repair-Services/nct-10890532'">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>Building Painting</h3>
+            <p>High-quality painting services for your home and office.</p>
+            <button type="button" onclick="location.href='https://www.justdial.com/Mangalore/House-Painters/nct-11017366'">Book Now</button>
+        </div>
+        <div class="service-card">
+            <h3>Other Services</h3>
+            <p>Explore a wide range of other home maintenance services.</p>
+            <button type="button" onclick="location.href='https://roomskart.com/property-maintenance-services-bangalore/'">Book Now</button>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer>
+        © 2024 Homefix | All Rights Reserved
+    </footer>
+
+    <script>
+        const services = [
+            "AC Technician",
+            "Electrician",
+            "Plumber",
+            "Mechanic",
+            "Carpenter",
+            "Technician",
+            "Cleaning",
+            "Pest Control",
+            "Home Appliances Repair",
+            "Building Painting",
+            "Other Services"
+        ];
+
+        // Function to show services when clicked
+        function showServices() {
+            document.getElementById("services-section").style.display = "flex";
+            document.querySelector(".content").style.display = "none"; // Hide the content
+        }
+
+        // Search function to filter services and show in dropdown
+        function searchService() {
+            const query = document.getElementById("search-bar").value.toLowerCase();
+            const dropdown = document.getElementById("dropdown");
+
+            if (query.length > 0) {
+                const filteredServices = services.filter(service => service.toLowerCase().includes(query));
+                
+                dropdown.innerHTML = ""; // Clear the dropdown
+                dropdown.style.display = "block"; // Show the dropdown
+
+                filteredServices.forEach(service => {
+                    const div = document.createElement("div");
+                    div.textContent = service;
+                    div.onclick = function() {
+                        alert("You selected: " + service);
+                        document.getElementById("search-bar").value = service;
+                        dropdown.style.display = "none"; // Hide dropdown after selection
+                    };
+                    dropdown.appendChild(div);
+                });
+            } else {
+                dropdown.style.display = "none"; // Hide dropdown if query is empty
+            }
+        }
+    </script>
+
+</body>
+
+</html>

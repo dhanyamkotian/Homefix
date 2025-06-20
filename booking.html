@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking & Scheduling</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        /* Booking Section */
+        .booking-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+
+        .booking-options,
+        .calendar-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 48%;
+        }
+
+        .booking-options h2,
+        .calendar-container h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        .booking-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .booking-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Calendar Styling */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .calendar .day {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .calendar .day:hover {
+            background-color: #e0f7e0;
+        }
+
+        /* Notification Popup */
+        .notification-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">Booking & Scheduling</div>
+    </nav>
+
+    <!-- Booking and Scheduling Section -->
+    <div class="booking-container">
+
+        <!-- Booking Options -->
+        <div class="booking-options">
+            <h2>Service Booking</h2>
+            <p>Select your booking option:</p>
+            <button class="booking-btn" id="instant-booking">Instant Booking</button>
+            <button class="booking-btn" id="scheduled-booking">Scheduled Booking</button>
+        </div>
+
+        <!-- Calendar Section -->
+        <div class="calendar-container">
+            <h2>Service Provider Calendar</h2>
+            <div class="calendar">
+                <!-- Days of the Week -->
+                <div class="day">Mon</div>
+                <div class="day">Tue</div>
+                <div class="day">Wed</div>
+                <div class="day">Thu</div>
+                <div class="day">Fri</div>
+                <div class="day">Sat</div>
+                <div class="day">Sun</div>
+
+                <!-- Calendar Days (Sample) -->
+                <div class="day">1</div>
+                <div class="day">2</div>
+                <div class="day">3</div>
+                <div class="day">4</div>
+                <div class="day">5</div>
+                <div class="day">6</div>
+                <div class="day">7</div>
+                <div class="day">8</div>
+                <div class="day">9</div>
+                <div class="day">10</div>
+                <div class="day">11</div>
+                <div class="day">12</div>
+                <div class="day">13</div>
+                <div class="day">14</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Popup -->
+    <div class="notification-popup" id="notification-popup">
+        Booking Confirmed! We will remind you before the appointment.
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        © 2024 Booking & Scheduling System | All Rights Reserved
+    </footer>
+
+    <!-- JavaScript for functionality -->
+    <script>
+        // Select DOM elements
+        const instantBookingBtn = document.getElementById('instant-booking');
+        const scheduledBookingBtn = document.getElementById('scheduled-booking');
+        const notificationPopup = document.getElementById('notification-popup');
+
+        // Instant Booking Button Event
+        instantBookingBtn.addEventListener('click', function () {
+            showNotification('Instant booking confirmed! We will send a confirmation.');
+        });
+
+        // Scheduled Booking Button Event
+        scheduledBookingBtn.addEventListener('click', function () {
+            showNotification('Your scheduled booking has been confirmed!');
+        });
+
+        // Function to show a notification popup
+        function showNotification(message) {
+            notificationPopup.textContent = message;
+            notificationPopup.style.display = 'block';
+
+            // Hide notification after 5 seconds
+            setTimeout(function () {
+                notificationPopup.style.display = 'none';
+            }, 5000);
+        }
+
+        // Handle Calendar day clicks (for simplicity, showing a basic interaction)
+        const days = document.querySelectorAll('.calendar .day');
+
+        days.forEach(day => {
+            day.addEventListener('click', () => {
+                if (day.textContent !== 'Mon' && day.textContent !== 'Tue' && day.textContent !== 'Wed' && day.textContent !== 'Thu' && day.textContent !== 'Fri' && day.textContent !== 'Sat' && day.textContent !== 'Sun') {
+                    day.style.backgroundColor = '#c8e6c9'; // Mark day as selected
+                    showNotification(`Appointment set for ${day.textContent}`);
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

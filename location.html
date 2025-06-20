@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Integration</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        /* Location Section */
+        .location-container {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .location-info,
+        .nearby-services {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 48%;
+        }
+
+        .location-info h2,
+        .nearby-services h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        .location-info p,
+        .nearby-services p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        /* Button */
+        .location-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .location-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .service-provider {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e0f7e0;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">Location Integration</div>
+    </nav>
+
+    <!-- Location Section -->
+    <div class="location-container">
+
+        <!-- Location Info -->
+        <div class="location-info">
+            <h2>Track Your Location</h2>
+            <p>Click the button to get the GPS location of the service provider or customer.</p>
+            <button class="location-btn" id="get-location-btn">Get Location</button>
+            <p id="location-result"></p>
+        </div>
+
+        <!-- Nearby Services -->
+        <div class="nearby-services">
+            <h2>Nearby Service Providers</h2>
+            <p>Click the button to find service providers near your location.</p>
+            <button class="location-btn" id="find-nearby-btn">Find Nearby Services</button>
+            <div id="service-providers"></div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        © 2024 Location Integration System | All Rights Reserved
+    </footer>
+
+    <!-- JavaScript for Location and Nearby Services -->
+    <script>
+        // Example service providers with fixed location (latitude, longitude)
+        const serviceProviders = [
+            { name: "Provider 1", lat: 40.7128, lon: -74.0060 }, // New York
+            { name: "Provider 2", lat: 34.0522, lon: -118.2437 }, // Los Angeles
+            { name: "Provider 3", lat: 51.5074, lon: -0.1278 },  // London
+            { name: "Provider 4", lat: 48.8566, lon: 2.3522 },   // Paris
+        ];
+
+        const locationResult = document.getElementById("location-result");
+        const serviceProvidersDiv = document.getElementById("service-providers");
+
+        // Get Location button event
+        document.getElementById("get-location-btn").addEventListener("click", function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
+                    locationResult.textContent = `Your Location: Latitude ${userLat}, Longitude ${userLon}`;
+                }, function (error) {
+                    locationResult.textContent = "Error getting location: " + error.message;
+                });
+            } else {
+                locationResult.textContent = "Geolocation is not supported by this browser.";
+            }
+        });
+
+        // Find Nearby Service Providers
+        document.getElementById("find-nearby-btn").addEventListener("click", function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
+
+                    // Clear previous results
+                    serviceProvidersDiv.innerHTML = "";
+
+                    // Find nearby providers
+                    serviceProviders.forEach(provider => {
+                        const distance = calculateDistance(userLat, userLon, provider.lat, provider.lon);
+                        if (distance <= 50) { // 50 km radius
+                            const providerDiv = document.createElement("div");
+                            providerDiv.classList.add("service-provider");
+                            providerDiv.textContent = `${provider.name} - Distance: ${distance.toFixed(2)} km`;
+                            serviceProvidersDiv.appendChild(providerDiv);
+                        }
+                    });
+
+                    if (serviceProvidersDiv.innerHTML === "") {
+                        serviceProvidersDiv.innerHTML = "<p>No nearby service providers found within 50 km.</p>";
+                    }
+                }, function (error) {
+                    serviceProvidersDiv.innerHTML = "Error getting location: " + error.message;
+                });
+            } else {
+                serviceProvidersDiv.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        });
+
+        // Haversine formula to calculate distance between two points in km
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the Earth in km
+            const dLat = degreesToRadians(lat2 - lat1);
+            const dLon = degreesToRadians(lon2 - lon1);
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(degreesToRadians(lat1)) * Math.cos(degreesToRadians(lat2)) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distance = R * c; // Distance in km
+            return distance;
+        }
+
+        // Convert degrees to radians
+        function degreesToRadians(degrees) {
+            return degrees * (Math.PI / 180);
+        }
+    </script>
+
+</body>
+
+</html>

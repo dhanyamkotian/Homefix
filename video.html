@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat and Video Call</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .option-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .option-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            margin: auto;
+        }
+
+        .messages {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        .send-message {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .send-message input {
+            width: 80%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .send-message button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .send-message button:hover {
+            background-color: #45a049;
+        }
+
+        /* Video Call Interface */
+        #local-video, #remote-video {
+            width: 300px;
+            height: 200px;
+            border: 2px solid #333;
+            margin: 10px;
+        }
+
+        /* End Call Button */
+        .end-call-btn {
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #F44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .end-call-btn:hover {
+            background-color: #e53935;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav>
+    <div class="logo">Chat and Video Call</div>
+</nav>
+
+<!-- Option Buttons (Chat or Video Call) -->
+<div class="option-buttons">
+    <button class="option-btn" onclick="showChat()">Chat</button>
+    <button class="option-btn" onclick="showVideoCall()">Video Call</button>
+</div>
+
+<!-- Chat Interface -->
+<div class="chat-container" id="chat-container" style="display: none;">
+    <h2>Chat with Service Provider</h2>
+    <div class="messages" id="messages"></div>
+    <div class="send-message">
+        <input type="text" id="message-input" placeholder="Type your message here..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<!-- Video Call Interface -->
+<div id="video-call-container" style="display: none;">
+    <h2>Video Call with Service Provider</h2>
+    <video id="local-video" autoplay></video>
+    <video id="remote-video" autoplay></video>
+    <button onclick="makeOffer()">Start Video Call</button>
+    <button class="end-call-btn" onclick="endVideoCall()">End Video Call</button>
+</div>
+
+<!-- Footer -->
+<footer>
+    © 2024 Chat and Video Call | All Rights Reserved
+</footer>
+
+<!-- JavaScript for Chat and Video Call -->
+<script>
+    // Chat Functionality
+    const socket = new WebSocket('ws://your-websocket-server'); // Example WebSocket URL
+    const messagesContainer = document.getElementById('messages');
+    const messageInput = document.getElementById('message-input');
+
+    // Handle incoming messages
+    socket.onmessage = (event) => {
+        const message = event.data;
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.textContent = message;
+        messagesContainer.appendChild(messageElement);
+    };
+
+    // Send message
+    function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message) {
+            socket.send(message);  // Send message to WebSocket server
+            messageInput.value = ''; // Clear input field
+        }
+    }
+
+    // Show Chat Interface
+    function showChat() {
+        document.getElementById('chat-container').style.display = 'block';
+        document.getElementById('video-call-container').style.display = 'none';
+    }
+
+    // Show Video Call Interface
+    function showVideoCall() {
+        document.getElementById('chat-container').style.display = 'none';
+        document.getElementById('video-call-container').style.display = 'block';
+        startVideoCall();
+    }
+
+    // WebRTC Video Call Functionality
+    let localStream;
+    let peerConnection;
+
+    // Get user media (video and audio)
+    function startVideoCall() {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                document.getElementById('local-video').srcObject = stream;
+                localStream = stream;
+            })
+            .catch(error => {
+                console.error('Error accessing media devices.', error);
+            });
+    }
+
+    // Create a WebRTC connection
+    function createConnection() {
+        peerConnection = new RTCPeerConnection();
+
+        // Add local stream to connection
+        localStream.getTracks().forEach(track => {
+            peerConnection.addTrack(track, localStream);
+        });
+
+        // Handle remote stream
+        peerConnection.ontrack = (event) => {
+            document.getElementById('remote-video').srcObject = event.streams[0];
+        };
+    }
+
+    // Create an offer for initiating the video call
+    function makeOffer() {
+        createConnection();
+        peerConnection.createOffer()
+            .then(offer => {
+                return peerConnection.setLocalDescription(offer);
+            })
+            .then(() => {
+                // Send the offer to the other peer via signaling server
+                // signalingChannel.send(JSON.stringify({ offer: peerConnection.localDescription }));
+            })
+            .catch(error => console.error('Error creating offer:', error));
+    }
+
+    // End the video call
+    function endVideoCall() {
+        // Stop local media tracks
+        localStream.getTracks().forEach(track => track.stop());
+
+        // Close the peer connection
+        if (peerConnection) {
+            peerConnection.close();
+            peerConnection = null;
+        }
+
+        // Reset the video elements
+        document.getElementById('local-video').srcObject = null;
+        document.getElementById('remote-video').srcObject = null;
+
+        // Hide the video call interface
+        document.getElementById('video-call-container').style.display = 'none';
+
+        // Show a message indicating the call has ended
+        alert("Video Call has ended.");
+    }
+</script>
+
+</body>
+</html>

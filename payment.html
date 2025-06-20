@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway Integration</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .payment-container {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .payment-options {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        .payment-options h2 {
+            font-size: 1.8em;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .payment-methods {
+            margin-bottom: 20px;
+        }
+
+        .payment-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .payment-btn:hover {
+            background-color: #45a049;
+        }
+
+        .invoice {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .invoice h3 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .invoice p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .payment-history {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-history h3 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .payment-history .history-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .payment-form {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .payment-form input {
+            padding: 8px;
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .payment-form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .payment-form button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav>
+    <div class="logo">Payment Gateway</div>
+</nav>
+
+<!-- Payment Section -->
+<div class="payment-container">
+    <div class="payment-options">
+        <h2>Select Payment Option</h2>
+
+        <div class="payment-methods">
+            <button class="payment-btn" onclick="showPaymentForm('UPI')">Pay with UPI</button><br>
+            <button class="payment-btn" onclick="showPaymentForm('Credit/Debit Card')">Pay with Card</button><br>
+            <button class="payment-btn" onclick="showPaymentForm('Wallet')">Pay with Wallet</button>
+        </div>
+
+        <!-- Payment Forms -->
+        <div class="payment-form" id="upi-form">
+            <h3>Enter UPI ID</h3>
+            <input type="text" id="upi-id" placeholder="Enter UPI ID">
+            <button onclick="processPayment('UPI')">Submit</button>
+        </div>
+
+        <div class="payment-form" id="card-form">
+            <h3>Enter Card Details</h3>
+            <input type="text" id="card-number" placeholder="Card Number">
+            <input type="text" id="card-expiry" placeholder="Expiry Date (MM/YY)">
+            <input type="text" id="card-cvc" placeholder="CVC">
+            <button onclick="processPayment('Credit/Debit Card')">Submit</button>
+        </div>
+
+        <div class="payment-form" id="wallet-form">
+            <h3>Enter Wallet Details</h3>
+            <input type="text" id="wallet-id" placeholder="Wallet ID">
+            <button onclick="processPayment('Wallet')">Submit</button>
+        </div>
+
+        <!-- Invoice -->
+        <div class="invoice" id="invoice">
+            <h3>Invoice</h3>
+            <p>Payment Method: <span id="payment-method"></span></p>
+            <p>Amount: $100</p>
+            <p>Payment Status: <span id="payment-status"></span></p>
+        </div>
+    </div>
+
+    <!-- Payment History -->
+    <div class="payment-history">
+        <h3>Payment History</h3>
+        <div id="history-list">
+            <!-- Payment history will be listed here -->
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    © 2024 Payment Gateway | All Rights Reserved
+</footer>
+
+<!-- JavaScript -->
+<script>
+    const paymentHistory = [];
+
+    function showPaymentForm(method) {
+        // Hide all payment forms
+        document.getElementById('upi-form').style.display = 'none';
+        document.getElementById('card-form').style.display = 'none';
+        document.getElementById('wallet-form').style.display = 'none';
+
+        // Show selected payment form
+        if (method === 'UPI') {
+            document.getElementById('upi-form').style.display = 'block';
+        } else if (method === 'Credit/Debit Card') {
+            document.getElementById('card-form').style.display = 'block';
+        } else if (method === 'Wallet') {
+            document.getElementById('wallet-form').style.display = 'block';
+        }
+    }
+
+    function processPayment(method) {
+        // Get payment details
+        let paymentDetails = '';
+        if (method === 'UPI') {
+            paymentDetails = document.getElementById('upi-id').value;
+        } else if (method === 'Credit/Debit Card') {
+            paymentDetails = document.getElementById('card-number').value;
+        } else if (method === 'Wallet') {
+            paymentDetails = document.getElementById('wallet-id').value;
+        }
+
+        if (!paymentDetails) {
+            alert('Please provide valid payment details.');
+            return;
+        }
+
+        // Simulating payment process
+        const paymentStatus = 'Successful'; // In a real system, this would depend on the actual payment response.
+
+        // Display invoice
+        document.getElementById("payment-method").textContent = method;
+        document.getElementById("payment-status").textContent = paymentStatus;
+        document.getElementById("invoice").style.display = 'block';
+
+        // Add to payment history
+        const payment = {
+            method: method,
+            amount: '$100',
+            status: paymentStatus,
+            date: new Date().toLocaleString()
+        };
+        paymentHistory.push(payment);
+
+        // Update payment history UI
+        updatePaymentHistory();
+    }
+
+    function updatePaymentHistory() {
+        const historyList = document.getElementById("history-list");
+        historyList.innerHTML = ''; // Clear previous history
+
+        paymentHistory.forEach(payment => {
+            const historyItem = document.createElement("div");
+            historyItem.classList.add("history-item");
+            historyItem.innerHTML = `
+                <strong>Payment Method:</strong> ${payment.method}<br>
+                <strong>Amount:</strong> ${payment.amount}<br>
+                <strong>Status:</strong> ${payment.status}<br>
+                <strong>Date:</strong> ${payment.date}
+            `;
+            historyList.appendChild(historyItem);
+        });
+    }
+</script>
+
+</body>
+</html>
